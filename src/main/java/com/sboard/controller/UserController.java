@@ -28,19 +28,19 @@ public class UserController {
     @GetMapping("/user/login")
     public String login(Model model){
         model.addAttribute(appInfo);
-        return "user/login";
+        return "/user/login";
     }
 
     @GetMapping("/user/terms")
     public String terms(Model model) {
         TermsDTO termsDTO = userService.getTerms();
         model.addAttribute("terms", termsDTO);
-        return "user/terms";
+        return "/user/terms";
     }
 
     @GetMapping("/user/register")
     public String register(){
-        return "user/register";
+        return "/user/register";
     }
 
     @PostMapping("/user/register")

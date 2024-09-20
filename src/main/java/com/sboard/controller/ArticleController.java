@@ -8,27 +8,27 @@ public class ArticleController {
 
     @GetMapping("/article/list")
     public String list(){
-        return "article/list";
+        return "/article/list";
     }
 
     @GetMapping("/article/modify")
     public String modify(){
-        return "article/modify";
+        return "/article/modify";
     }
 
     @GetMapping("/article/view")
     public String view(){
-        return "article/view";
+        return "/article/view";
     }
 
     @GetMapping("/article/write")
     public String write(){
-        return "article/write";
+        return "/article/write";
     }
 
     @GetMapping("/article/delete")
     public String delete(){
-        return "article/delete";
+        return "/article/delete";
     }
 
 }
