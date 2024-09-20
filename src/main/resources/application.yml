@@ -1,35 +1,31 @@
-jwt:
-    issuer: under912@naver.com
-    secret: nhJoeH7FctPVlEKToZJw3hjF609SJDSE
 logging:
     file:
         name: /logs/sboard.log
     level:
         jdbc:
+            resultsettable: debug
             sqlonly: debug
+            sqltiming: debug
         org:
             hibernate:
                 orm:
                     jdbc:
                         bind: trace
                 sql: debug
-        resultsettable: debug
         root: info
-        sqltiming: debug
 server:
     port: 8080
     servlet:
         context-path: /sboard
 spring:
-
     application:
         name: sboard
-        version: 0.0.2
+        version: 0.0.3
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        password: Wnrud1234!
         url: jdbc:mysql://15.164.70.236:3306/jboard
         username: jboard
+        password: Wnrud1234!
     devtools:
         livereload:
             enabled: true
