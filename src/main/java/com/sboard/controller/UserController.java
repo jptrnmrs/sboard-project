@@ -28,7 +28,7 @@ public class UserController {
     @GetMapping("/user/login")
     public String login(Model model){
         model.addAttribute(appInfo);
-        return "/user/login";
+        return "user/login";
     }
 
     @GetMapping("/user/terms")
@@ -41,6 +41,21 @@ public class UserController {
     @GetMapping("/user/register")
     public String register(){
         return "user/register";
+    }
+
+    @PostMapping("/user/register")
+    public String register(HttpServletRequest req, UserDTO userDTO){
+
+        log.info(userDTO);
+
+        String regip = req.getRemoteAddr();
+        userDTO.setRegip(regip);
+
+        log.info(userDTO.toString());
+
+        userService.insertUser(userDTO);
+
+        return "redirect:/user/login?success=200";
     }
 
     @ResponseBody
@@ -94,21 +109,6 @@ public class UserController {
         }
     }
 
-
-        @PostMapping("/user/register")
-        public String register(HttpServletRequest req, UserDTO userDTO){
-
-            log.info(userDTO);
-
-            String regip = req.getRemoteAddr();
-            userDTO.setRegip(regip);
-
-            log.info(userDTO.toString());
-
-            userService.insertUser(userDTO);
-
-            return "redirect:/user/login?success=200";
-        }
 
     @GetMapping("/logout")
     public String logout(){
