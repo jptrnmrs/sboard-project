@@ -26,8 +26,7 @@ public class UserController {
 
 
     @GetMapping("/user/login")
-    public String login(Model model){
-        model.addAttribute(appInfo);
+    public String login( ){
         return "/user/login";
     }
 
