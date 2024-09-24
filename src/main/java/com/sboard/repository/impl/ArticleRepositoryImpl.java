@@ -33,8 +33,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .from(qArticle)
                 .join(qUser)
                 .on(qArticle.writer.eq(qUser.uid))
-                .offset(pageRequestDTO.getPg())
-                .limit(pageRequestDTO.getSize())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .orderBy(qArticle.no.desc())
                 .fetch();
 
@@ -71,8 +71,8 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .join(qUser)
                 .on(qArticle.writer.eq(qUser.uid))
                 .where(expression)
-                .offset(pageRequestDTO.getPg())
-                .limit(pageRequestDTO.getSize())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
                 .orderBy(qArticle.no.desc())
                 .fetch();
 
