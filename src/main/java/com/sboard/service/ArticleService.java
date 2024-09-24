@@ -3,6 +3,7 @@ package com.sboard.service;
 import com.querydsl.core.Tuple;
 import com.sboard.dto.ArticleDTO;
 import com.sboard.dto.PageRequestDTO;
+import com.sboard.dto.PageResponseDTO;
 import com.sboard.entity.Article;
 import com.sboard.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -50,7 +51,9 @@ public class ArticleService {
         }).toList();
         return articleDTOs;
     }
-    public List<ArticleDTO> selectArticleAll(PageRequestDTO pageRequestDTO) {
+
+
+    public PageResponseDTO selectArticleAll(PageRequestDTO pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable("no");
         Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(pageRequestDTO,pageable);
 
@@ -60,7 +63,14 @@ public class ArticleService {
 
                 return modelMapper.map(article, ArticleDTO.class);
             }).toList();
-        return articleDTOs;
+
+        int total = (int) pageArticle.getTotalElements();
+
+        return PageResponseDTO.builder()
+                .pageRequestDTO(pageRequestDTO)
+                .dtoList(articleDTOs)
+                .total(total)
+                .build();
     }
 
 

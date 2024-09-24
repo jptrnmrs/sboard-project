@@ -15,6 +15,8 @@ import org.springframework.data.domain.Sort;
 @Builder
 public class PageRequestDTO {
 
+    private String cate;
+
     @Builder.Default
     private int no = 1;
 
