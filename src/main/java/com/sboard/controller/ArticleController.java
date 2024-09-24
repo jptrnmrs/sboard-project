@@ -3,6 +3,7 @@ package com.sboard.controller;
 import com.sboard.config.AppInfo;
 import com.sboard.dto.ArticleDTO;
 import com.sboard.dto.FileDTO;
+import com.sboard.dto.PageRequestDTO;
 import com.sboard.entity.User;
 import com.sboard.security.MyUserDetails;
 import com.sboard.service.ArticleService;
@@ -31,7 +32,9 @@ public class ArticleController {
 
 
     @GetMapping("/article/list")
-    public String list( ) {
+    public String list(Model model, PageRequestDTO pageRequestDTO) {
+        List<ArticleDTO> articles = articleService.selectArticleAll(pageRequestDTO);
+        model.addAttribute("articles", articles);
         return "/article/list";
     }
 

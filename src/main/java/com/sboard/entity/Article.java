@@ -7,8 +7,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Getter
-@ToString
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -33,5 +32,7 @@ public class Article {
     @CreationTimestamp
     private LocalDateTime rdate;
 
-
+    // 추가필드
+    @Transient  // 엔티티 속성에서 제외시키는 어노테이션
+    private String nick;
 }

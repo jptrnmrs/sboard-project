@@ -35,4 +35,7 @@ public class ArticleDTO {
 
     private String writer;
 
+    private String nick;
+
+
 }
