@@ -15,7 +15,8 @@ import org.springframework.data.domain.Sort;
 @Builder
 public class PageRequestDTO {
 
-    private String cate;
+    @Builder.Default
+    private String cate = "free";
 
     @Builder.Default
     private int no = 1;
@@ -25,6 +26,11 @@ public class PageRequestDTO {
 
     @Builder.Default
     private int size = 10;
+
+
+    private String type;
+    private String keyword;
+
 
     public Pageable getPageable(String sort) {
         return PageRequest.of(this.pg -1, this.size, Sort.by(sort).descending());

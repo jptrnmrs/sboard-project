@@ -53,10 +53,16 @@ public class ArticleService {
     }
 
 
-    public PageResponseDTO selectArticleAll(PageRequestDTO pageRequestDTO) {
+    public PageResponseDTO selectArticles(PageRequestDTO pageRequestDTO) {
         Pageable pageable = pageRequestDTO.getPageable("no");
-        Page<Tuple> pageArticle = articleRepository.selectArticleAllForList(pageRequestDTO,pageable);
 
+        Page<Tuple> pageArticle = null;
+
+        if(pageRequestDTO.getKeyword()==null) {
+            pageArticle = articleRepository.selectArticleAllForList(pageRequestDTO, pageable);
+        }else {
+            pageArticle = articleRepository.selectArticleForSearch(pageRequestDTO, pageable);
+        }
         List<ArticleDTO> articleDTOs = pageArticle.getContent().stream().map(tuple ->{
                 Article article = tuple.get(0, Article.class);
                 article.setNick(tuple.get(1, String.class));
