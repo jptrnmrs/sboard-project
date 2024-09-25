@@ -33,4 +33,18 @@ public class CommentService {
         return modelMapper.map(commentRepository.save(com), CommentDTO.class);
     }
 
+    public Boolean deleteComment(CommentDTO comment) {
+        Article article = articleRepository.selectArticleByNo(comment.getParent());
+
+        int count = article.getComment();
+        article.setComment(--count);
+        articleRepository.save(article);
+        try{
+            commentRepository.deleteById(comment.getCno());
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
 }

@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -29,5 +30,13 @@ public class CommentController {
         return ResponseEntity
                 .ok()
                 .body(dto);
+    }
+    @DeleteMapping("/comment")
+    public ResponseEntity write(@RequestBody CommentDTO commentDTO) {
+        Boolean result = commentService.deleteComment(commentDTO);
+
+        return ResponseEntity
+                .ok()
+                .body(result);
     }
 }

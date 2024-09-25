@@ -10,23 +10,26 @@
             const btnComplete = document.getElementById('btnComplete');
             const commentForm = document.commentForm;
             const commentList = document.getElementsByClassName('commentList')[0];
+            const empty = document.getElementsByClassName('empty')[0];
 
-            btnComplete.onclick = async function (e){
 
-                e.preventDefault();
-                if(!confirm('등록하시겠습니까?')){return;}
+                btnComplete.onclick = async function(e){
+                    e.preventDefault();
+                    if (!confirm('등록하시겠습니까?')) {
+                        return;
+                    }
 
-                const jsonData = {
-                                    "writer":commentForm.writer.value,
-                                    "parent":commentForm.parent.value,
-                                    "content":commentForm.content.value
-                                 }
-                const data = await fetchPost('/sboard/comment',jsonData);
-                console.log(data);
-                if(data.cno > 0){
-                    alert('댓글이 등록되었습니다.')
+                    const jsonData = {
+                        "writer": commentForm.writer.value,
+                        "parent": commentForm.parent.value,
+                        "content": commentForm.content.value
+                    }
+                    const data = await fetchPost('/sboard/comment', jsonData);
+                    console.log(data);
+                    if (data.cno > 0) {
+                        alert('댓글이 등록되었습니다.')
 
-                    const commentArticle = `<article>
+                        const commentArticle = `<article>
                                                 <span class="nick">${data.user.nick}</span> |
                                                 <span class="date">${data.rdate.substring(2, 10)} ${data.rdate.substring(11, 19)}</span>
                                                 <p class="content">${data.content}</p>
@@ -36,11 +39,48 @@
                                                 </div>
                                             </article>`;
 
-                    commentList.insertAdjacentHTML('beforeend',commentArticle);
-                    commentForm.content.value="";
-                    commentForm.content.focus();
+                        commentList.insertAdjacentHTML('beforeend', commentArticle);
+                        empty.remove();
+                        commentForm.content.value = "";
+                        commentForm.content.focus();
+                    }
                 }
+            async function removeComment(e) {
+                    e.preventDefault();
+
+                    if (!confirm('삭제하시겠습니까?')) {
+                        return;
+                    }
+
+                    const info = document.getElementById('articleInfo');
+                    const article = e.target.closest('article');
+                    const cno = e.target.dataset.cno;
+                    const parent = e.target.dataset.parent;
+
+                    const jsonData = {
+                        "cno": cno,
+                        "parent": parent
+                    }
+
+                    const data = await fetchDelete('/sboard/comment', jsonData)
+                    console.log(data);
+
+                    if (data.result) {
+                        alert('댓글이 삭제되었습니다.');
+                        article.remove();
+                        info.innerHTML = `${article.nick}　  　${article.rdate.substring(2, 10)} ${article.rdate.substring(11, 19)}
+                                <span>조회수 ${article.hit} 　 댓글 ${article.comment}</span>`
+                    } else {
+                        alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+                    }
+
             }
+            document.addEventListener('click',function (e){
+               if (e.target.classList==='remove'){
+                   removeComment(e);
+               }
+            });
+
         }
     </script>
 </head>
@@ -102,9 +142,9 @@
                         <span class="nick">[[${comment.user.nick}]]</span> |
                         <span class="date">[[${#strings.substring(comment.rdate,2,10)}]] [[${#strings.substring(comment.rdate,11,19)}]]</span>
                         <p class="content">[[${comment.content}]]</p>
-                        <div th:if="${#authentication.principal.user.uid==comment.writer}">
-                            <a href="#" class="remove">삭제</a>
-                            <a href="#" class="modify">수정</a>
+                        <div th:if="${#authentication.principal.user.uid==comment.user.uid}">
+                            <a href="#" class="remove" th:data-cno="${comment.cno}" th:data-parent="${article.no}">삭제</a>
+                            <a href="#" class="modify" th:data-cno="${comment.cno}" th:data-parent="${article.no}">수정</a>
                         </div>
                     </article>
 
