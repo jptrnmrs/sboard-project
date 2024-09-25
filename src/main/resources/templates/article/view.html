@@ -4,6 +4,45 @@
     <meta charset="UTF-8">
     <title>글보기</title>
     <link rel="stylesheet" th:href="@{/css/style.css}"/>
+    <script th:src="@{/js/utils.js}"></script>
+    <script>
+        window.onload = function (){
+            const btnComplete = document.getElementById('btnComplete');
+            const commentForm = document.commentForm;
+            const commentList = document.getElementsByClassName('commentList')[0];
+
+            btnComplete.onclick = async function (e){
+
+                e.preventDefault();
+                if(!confirm('등록하시겠습니까?')){return;}
+
+                const jsonData = {
+                                    "writer":commentForm.writer.value,
+                                    "parent":commentForm.parent.value,
+                                    "content":commentForm.content.value
+                                 }
+                const data = await fetchPost('/sboard/comment',jsonData);
+                console.log(data);
+                if(data.cno > 0){
+                    alert('댓글이 등록되었습니다.')
+
+                    const commentArticle = `<article>
+                                                <span class="nick">${data.user.nick}</span> |
+                                                <span class="date">${data.rdate.substring(2, 10)} ${data.rdate.substring(11, 19)}</span>
+                                                <p class="content">${data.content}</p>
+                                                <div>
+                                                    <a href="#" class="remove">삭제</a>
+                                                    <a href="#" class="modify">수정</a>
+                                                </div>
+                                            </article>`;
+
+                    commentList.insertAdjacentHTML('beforeend',commentArticle);
+                    commentForm.content.value="";
+                    commentForm.content.focus();
+                }
+            }
+        }
+    </script>
 </head>
 <body>
     <div id="wrapper">
@@ -19,21 +58,33 @@
                 <nav>
                     <h1>글보기</h1>
                 </nav>
-                <table border="0">                    
+                <table>
                     <tr>
-                        <th>제목</th>
-                        <td><input type="text" name="title" value="제목입니다." readonly/></td>
+                        <td colspan="3">
+                            <input type="text" name="title" th:value="${article.title}" readonly /></td>
                     </tr>
                     <tr>
-                        <th>파일</th>
-                        <td><a href="#">2020년 상반기 매출자료.xls</a>&nbsp;<span>7</span>회 다운로드</td>
-                    </tr>
-                    <tr>
-                        <th>내용</th>
-                        <td>
-                            <textarea name="content" readonly>내용 샘플입니다.</textarea>
+                        <td colspan="3" id="articleInfo">
+                            [[${article.nick}]]　  　[[${#strings.substring(article.rdate,0,10)}]] [[${#strings.substring(article.rdate,11,19)}]]
+                            <span>조회수 [[${article.hit}]] 　 댓글 [[${article.comment}]]</span>
                         </td>
-                    </tr>                    
+                    </tr>
+                    <th:block th:if="${article.file>0}">
+                        <tr>
+                            <td style="width:50px" th:rowspan="${article.file}">첨부파일</td>
+                            <!--							<c:forEach var="file" items="${article.files}">-->
+                            <th:block th:each="file:${article.fileList}">
+                            <td style="border-bottom:none"><a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a></td>
+                            <td style="border-bottom:none"><span style="color: grey;">[[${file.download}]]회 다운로드</span></td>
+                        </tr>
+                            </th:block>
+                    </th:block>
+                    </tr>
+                    <tr>
+                        <td colspan="3" class="content">
+                            <textarea name="content" readonly>[[${article.content}]]</textarea>
+                        </td>
+                    </tr>
                 </table>
                 
                 <div>
@@ -45,29 +96,36 @@
                 <!-- 댓글목록 -->
                 <section class="commentList">
                     <h3>댓글목록</h3>                   
+                    <th:block th:if="${article.comment>0}">
 
-                    <article>
-                        <span class="nick">길동이</span>
-                        <span class="date">20-05-20</span>
-                        <p class="content">댓글 샘플 입니다.</p>                        
-                        <div>
+                    <article th:each="comment:${article.commentList}">
+                        <span class="nick">[[${comment.user.nick}]]</span> |
+                        <span class="date">[[${#strings.substring(comment.rdate,2,10)}]] [[${#strings.substring(comment.rdate,11,19)}]]</span>
+                        <p class="content">[[${comment.content}]]</p>
+                        <div th:if="${#authentication.principal.user.uid==comment.writer}">
                             <a href="#" class="remove">삭제</a>
                             <a href="#" class="modify">수정</a>
                         </div>
                     </article>
 
+                    </th:block>
+
+                    <th:block th:unless="${article.comment>0}">
                     <p class="empty">등록된 댓글이 없습니다.</p>
 
+                    </th:block>
                 </section>
 
                 <!-- 댓글쓰기 -->
                 <section class="commentForm">
                     <h3>댓글쓰기</h3>
-                    <form action="#">
-                        <textarea name="content">댓글내용 입력</textarea>
+                    <form name="commentForm" method="post">
+                        <input type="hidden" th:value="${#authentication.principal.user.uid}" name="writer">
+                        <input type="hidden" th:value="${article.no}" name="parent">
+                        <textarea name="content" placeholder="댓글내용 입력"></textarea>
                         <div>
                             <a href="#" class="btn btnCancel">취소</a>
-                            <input type="submit" value="작성완료" class="btn btnComplete"/>
+                            <input type="submit" value="작성완료" id="btnComplete" class="btn btnComplete"/>
                         </div>
                     </form>
                 </section>

@@ -23,12 +23,10 @@
                     <input type="hidden" th:value="${#authentication.principal.user.uid}" name="writer">
                     <table border="0">                        
                         <tr>
-                            <th>제목</th>
-                            <td><input type="text" name="title" placeholder="제목을 입력하세요."/></td>
+                            <td colspan="2"><input type="text" name="title" placeholder="제목을 입력하세요."/></td>
                         </tr>
                         <tr>
-                            <th>내용</th>
-                            <td>
+                            <td colspan="2">
                                 <textarea name="content"></textarea>
                             </td>
                         </tr>

@@ -307,11 +307,11 @@ footer > p > .version {
     border-bottom: 1px solid #e9e9e9;
     text-align: center;
 }
-#board > .list > table tr > td:nth-child(1) {}
-#board > .list > table tr > td:nth-child(2) {text-align: left;}
-#board > .list > table tr > td:nth-child(3) {}
-#board > .list > table tr > td:nth-child(4) {}
-#board > .list > table tr > td:nth-child(5) {}
+#board > .list > table tr > td:nth-child(1) {width:  50px; text-align: center; background: #fff;}
+#board > .list > table tr > td:nth-child(2) {width:  auto; text-align: left;}
+#board > .list > table tr > td:nth-child(3) {width: 100px; text-align: center;}
+#board > .list > table tr > td:nth-child(4) {width: 100px; text-align: center;}
+#board > .list > table tr > td:nth-child(5) {width:  50px; text-align: center;}
 
 #board > .list > .page {
     text-align: center;
@@ -353,16 +353,17 @@ footer > p > .version {
 #board > .write table th {
     width: 112px;
     height: 50px;
-    background: #f5f8f9;
     border-bottom: 1px solid #e9e9e9;
+    text-align: center;
 }
 #board > .write table td {
-    padding: 10px;
     box-sizing: border-box;
+    padding: 12px 6px;
+    border-top: 1px solid #e9e9e9;
     border-bottom: 1px solid #e9e9e9;
 }
 #board > .write table td > input {
-    width: 400px;
+    width: 100%;
     height: 24px;
     border: none;
 }
@@ -391,26 +392,31 @@ footer > p > .version {
     border-collapse: collapse;
     border-spacing: 0;
     border-top: 2px solid #111;
+    border-top: 2px solid #111;
+    margin-top: 6px;
 }
 #board > .view table caption{
     text-align: left;
     margin-bottom: 6px;
 }
 #board > .view table th {
-    width: 112px;
-    height: 50px;
-    background: #f5f8f9;
-    border-bottom: 1px solid #e9e9e9;
+    padding: 12px;
+    border-top: 1px solid #d1dee2;
+    border-bottom: 1px solid #d1dee2;
+    background: #e5ecef;
+    color: #383838;
 }
+#board > .view table tr:nth-child(1)>td>input{font-weight:bold;text-align: center;}
+#board > .view table tr:nth-child(2) td span{float : right;}
 #board > .view table td {
-    padding: 10px;
-    box-sizing: border-box;
+    padding: 12px;
+    border-top: 1px solid #e9e9e9;
     border-bottom: 1px solid #e9e9e9;
 }
 #board > .view table td > input {
-    width: 400px;
+    width: 100%;
     height: 24px;
-    border: none;
+    border: 0;
 }
 #board > .view table td > textarea {
     width: 100%;
@@ -427,11 +433,12 @@ footer > p > .version {
 #board > .view > section {
     width: 100%;
     height: auto;
-    border: 1px solid #e3e3e3;
-    background: #f9f9f9;
     box-sizing: border-box;
     margin-top: 10px;
-    padding: 16px;
+    padding: 20px;
+    border: 1px solid #e3e3e3;
+    background: #f9f9f9;
+    margin-bottom: 16px;
 }
     
 #board > .view > section > h3 {

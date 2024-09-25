@@ -3,7 +3,9 @@ package com.sboard.repository.impl;
 import com.querydsl.core.Tuple;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import com.sboard.dto.ArticleDTO;
 import com.sboard.dto.PageRequestDTO;
+import com.sboard.entity.Article;
 import com.sboard.entity.QArticle;
 import com.sboard.entity.QUser;
 import com.sboard.repository.custom.ArticleRepositoryCustom;
@@ -86,5 +88,19 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
 
         return new PageImpl<>(contents, pageable, total);
 
+    }
+
+    @Override
+    public Article selectArticleByNo(int no) {
+        Tuple tuple = queryFactory.select(qArticle, qUser.nick)
+                .from(qArticle)
+                .join(qUser)
+                .on(qArticle.writer.eq(qUser.uid))
+                .where(qArticle.no.eq(no))
+                .fetchOne();
+
+        Article article = tuple.get(0, Article.class);
+        article.setNick(tuple.get(1, String.class));
+        return article;
     }
 }

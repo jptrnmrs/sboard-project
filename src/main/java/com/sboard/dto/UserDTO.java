@@ -19,7 +19,10 @@ public class UserDTO {
     private String nick;
     private String email;
     private String hp;
-    private String role;
+
+    @Builder.Default
+    private String role = "USER";
+
     private String zip;
     private String addr1;
     private String addr2;
@@ -27,19 +30,5 @@ public class UserDTO {
     private String regDate;
     private String leaveDate;
 
-    public User toEntity() {
-        return User.builder()
-                .uid(uid)
-                .pass(pass)
-                .name(name)
-                .nick(nick)
-                .email(email)
-                .hp(hp)
-                .role(role)
-                .zip(zip)
-                .addr1(addr1)
-                .addr2(addr2)
-                .regip(regip)
-                .build();
-    }
+
 }

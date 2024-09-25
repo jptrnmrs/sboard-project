@@ -6,6 +6,7 @@ import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @NoArgsConstructor
@@ -35,4 +36,10 @@ public class Article {
     // 추가필드
     @Transient  // 엔티티 속성에서 제외시키는 어노테이션
     private String nick;
+
+    @OneToMany(mappedBy = "ano")
+    private List<FileEntity> fileList;
+
+    @OneToMany(mappedBy = "parent")
+    private List<Comment> commentList;
 }

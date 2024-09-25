@@ -9,6 +9,7 @@ import com.sboard.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Value;
@@ -31,6 +32,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final TermsRepository termsRepository;
+    private final ModelMapper modelMapper;
 
     public TermsDTO getTerms() {
         List<Terms> terms = termsRepository.findAll();
@@ -41,7 +43,7 @@ public class UserService {
 
         String encodedPassword = passwordEncoder.encode(user.getPass());
         user.setPass(encodedPassword);
-        userRepository.save(user.toEntity());
+        userRepository.save(modelMapper.map(user,User.class));
     }
 
 
@@ -49,7 +51,7 @@ public class UserService {
         Optional<User> opt = userRepository.findById(username);
         if(opt.isPresent()) {
             User user = opt.get();
-            return user.toDTO();
+            return modelMapper.map(user,UserDTO.class);
         }
         return null;
     }

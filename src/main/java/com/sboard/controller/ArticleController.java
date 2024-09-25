@@ -1,13 +1,11 @@
 package com.sboard.controller;
 
 import com.sboard.config.AppInfo;
-import com.sboard.dto.ArticleDTO;
-import com.sboard.dto.FileDTO;
-import com.sboard.dto.PageRequestDTO;
-import com.sboard.dto.PageResponseDTO;
+import com.sboard.dto.*;
 import com.sboard.entity.User;
 import com.sboard.security.MyUserDetails;
 import com.sboard.service.ArticleService;
+import com.sboard.service.CommentService;
 import com.sboard.service.FileService;
 import com.sboard.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
@@ -30,6 +28,7 @@ public class ArticleController {
 
     private final ArticleService articleService;
     private final FileService fileService;
+    private final CommentService commentService;
 
 
     @GetMapping("/article/list")
@@ -47,7 +46,10 @@ public class ArticleController {
     }
 
     @GetMapping("/article/view")
-    public String view(){
+    public String view(int no, Model model) {
+        ArticleDTO articleDTO = articleService.selectArticle(no);
+        log.info(articleDTO);
+        model.addAttribute("article",articleDTO);
         return "/article/view";
     }
 

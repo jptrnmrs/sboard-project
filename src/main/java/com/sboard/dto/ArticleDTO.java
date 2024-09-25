@@ -1,9 +1,6 @@
 package com.sboard.dto;
 
-import com.sboard.entity.Article;
-import com.sboard.repository.UserRepository;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -36,6 +33,9 @@ public class ArticleDTO {
     private String writer;
 
     private String nick;
+
+    private List<FileDTO> fileList;
+    private List<CommentDTO> commentList;
 
 
 }

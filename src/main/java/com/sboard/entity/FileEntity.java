@@ -6,8 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
-@Getter
-@ToString
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder

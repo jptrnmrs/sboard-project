@@ -5,7 +5,9 @@ import com.sboard.dto.ArticleDTO;
 import com.sboard.dto.PageRequestDTO;
 import com.sboard.dto.PageResponseDTO;
 import com.sboard.entity.Article;
+import com.sboard.entity.Comment;
 import com.sboard.repository.ArticleRepository;
+import com.sboard.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.modelmapper.ModelMapper;
@@ -23,6 +25,7 @@ import java.util.List;
 public class ArticleService {
 
     private final ArticleRepository articleRepository;
+    private final CommentRepository commentRepository;
     private final ModelMapper modelMapper;
 
 
@@ -41,8 +44,17 @@ public class ArticleService {
 
 
     public ArticleDTO selectArticle(int no) {
-        return null;
+        Article article = articleRepository.selectArticleByNo(no);
+        log.info(article);
+
+        int hit = article.getHit();
+        article.setHit(hit+1);
+        articleRepository.save(article);
+
+        ArticleDTO articleDTO = modelMapper.map(article, ArticleDTO.class);
+        return articleDTO;
     }
+
     public List<ArticleDTO> selectArticles() {
         List<Article> articles = articleRepository.findAll();
         List<ArticleDTO> articleDTOs = articles.stream().map(entity ->{
