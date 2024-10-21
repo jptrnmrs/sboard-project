@@ -1,18 +1,16 @@
 package com.sboard.controller;
 
 import com.sboard.dto.CommentDTO;
-import com.sboard.entity.Comment;
 import com.sboard.service.CommentService;
 import com.sboard.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+@Log4j2
 @RequiredArgsConstructor
 @RestController
 public class CommentController {
@@ -27,16 +25,22 @@ public class CommentController {
         commentDTO.setUser(userService.selectUser(commentDTO.getWriter()));
         CommentDTO dto = commentService.insertComment(commentDTO);
 
+        log.info(dto.toString());
         return ResponseEntity
                 .ok()
                 .body(dto);
     }
     @DeleteMapping("/comment")
-    public ResponseEntity write(@RequestBody CommentDTO commentDTO) {
-        Boolean result = commentService.deleteComment(commentDTO);
+    public ResponseEntity<Boolean> deleteComment(CommentDTO commentDTO) {
 
-        return ResponseEntity
-                .ok()
-                .body(result);
+        Boolean result = commentService.deleteComment(commentDTO);
+        log.info("result : " + result);
+
+        if (result) {
+            return ResponseEntity.ok(true); // 삭제 성공
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(false); // 댓글 없음 또는 삭제 실패
+        }
     }
+
 }

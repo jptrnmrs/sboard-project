@@ -1,11 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>회원가입</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
+
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <script th:src="@{/js/utils.js}"></script>
     <script>
         //유효성 검사에 사용할 상태변수
         let isUidOk   = false;
@@ -43,7 +37,7 @@
                 }
 
                 setTimeout(async () => {
-                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/user/${type}/${value}`);
                     if(data.result > 0){
                         showResultInvalid(resultUid, '이미 사용 중인 아이디 입니다.');
                         isUidOk = false;
@@ -112,7 +106,7 @@
 
                 setTimeout(async () => {
 
-                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/user/${type}/${value}`);
 
                     if(data.result > 0){
                         showResultInvalid(resultNick, '이미 사용중인 닉네임 입니다.');
@@ -145,7 +139,7 @@
 
                 // 이메일 인증코드 발급 및 중복체크
                 setTimeout(async () => {
-                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/user/${type}/${value}`);
                     console.log('data : ' + data.result);
 
                     if(data.result > 0){
@@ -169,7 +163,7 @@
 
                 const jsonData = {"code": inputEmailCode.value};
 
-                const data = await fetchPost(`/sboard/email`, jsonData);
+                const data = await fetchPost(`/email`, jsonData);
 
                 if(!data.result){
                     showResultInvalid(resultEmail, '인증코드가 일치하지 않습니다.');
@@ -197,7 +191,7 @@
                 }
 
                 setTimeout(async () => {
-                    const data = await fetchGet(`/sboard/user/${type}/${value}`);
+                    const data = await fetchGet(`/user/${type}/${value}`);
 
                     if(data.result > 0){
                         showResultInvalid(resultHp, '이미 사용중인 휴대폰 입니다.');
@@ -255,12 +249,8 @@
             }
         }
     </script>
-</head>
-<body>
-    <div id="wrapper">
-        <header>
-            <h3>Board System</h3>
-        </header>
+
+    <th:block th:replace="/_header.html"></th:block>
         <main id="user">
             <section class="register">
 
@@ -338,7 +328,7 @@
                     </table>
 
                     <div>
-                        <a href="./login.html" class="btn btnCancel">취소</a>
+                        <a href="/login" class="btn btnCancel">취소</a>
                         <input type="submit" value="회원가입" class="btn btnRegister"/>
                     </div>
 
@@ -346,12 +336,4 @@
 
             </section>
         </main>
-        <footer>
-            <p>
-                <span class="copyright">Copyrightⓒ 김철학(개발에반하다.)</span>
-                <span class="version">v1.0.1</span>
-            </p>
-        </footer>
-    </div>    
-</body>
-</html>
+        <th:block th:replace="/_footer.html"></th:block>

@@ -169,10 +169,10 @@ function postcode() {
             }
 
             // 선택된 우편번호와 주소 정보를 input 박스에 넣는다.
-            document.getElementById('zip').value = data.zonecode;
-            document.getElementById('addr1').value = addr;
-            document.getElementById('addr2').value += extraAddr;
-            document.getElementById('addr2').focus(); // 우편번호 + 주소 입력이 완료되었음으로 상세주소로 포커스 이동
+            document.getElementById('inputZip').value = data.zonecode;
+            document.getElementById('inputAddr1').value = addr;
+            document.getElementById('inputAddr2').value += extraAddr;
+            document.getElementById('inputAddr2').focus(); // 우편번호 + 주소 입력이 완료되었음으로 상세주소로 포커스 이동
         }
     }).open();
 }

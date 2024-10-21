@@ -20,6 +20,8 @@ public class QArticle extends EntityPathBase<Article> {
 
     public static final QArticle article = new QArticle("article");
 
+    public final NumberPath<Integer> ano = createNumber("ano", Integer.class);
+
     public final StringPath cate = createString("cate");
 
     public final NumberPath<Integer> comment = createNumber("comment", Integer.class);
@@ -33,8 +35,6 @@ public class QArticle extends EntityPathBase<Article> {
     public final ListPath<FileEntity, QFileEntity> fileList = this.<FileEntity, QFileEntity>createList("fileList", FileEntity.class, QFileEntity.class, PathInits.DIRECT2);
 
     public final NumberPath<Integer> hit = createNumber("hit", Integer.class);
-
-    public final NumberPath<Integer> no = createNumber("no", Integer.class);
 
     public final DateTimePath<java.time.LocalDateTime> rdate = createDateTime("rdate", java.time.LocalDateTime.class);
 

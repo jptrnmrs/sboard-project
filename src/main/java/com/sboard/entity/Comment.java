@@ -20,8 +20,11 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int cno;
 
+    @Column(name = "ano")
     private int parent;
+
     private String content;
+    private String writer;
     private String regip;
 
     @CreationTimestamp
@@ -29,6 +32,6 @@ public class Comment {
 
     // 추가필드
     @ManyToOne
-    @JoinColumn(name="writer")
+    @JoinColumn(name="user")
     private User user;
 }

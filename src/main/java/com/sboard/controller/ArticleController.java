@@ -1,19 +1,12 @@
 package com.sboard.controller;
 
-import com.sboard.config.AppInfo;
 import com.sboard.dto.*;
-import com.sboard.entity.User;
-import com.sboard.security.MyUserDetails;
 import com.sboard.service.ArticleService;
 import com.sboard.service.CommentService;
 import com.sboard.service.FileService;
-import com.sboard.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;

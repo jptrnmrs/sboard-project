@@ -1,19 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>글수정</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-</head>
-<body>
-    <div id="wrapper">
-        <header>
-            <h3>Board System</h3>
-            <p>
-                <span>홍길동</span>님 반갑습니다.
-                <a href="#">[로그아웃]</a>
-            </p>
-        </header>
+
+<th:block th:replace="/_header.html"></th:block>
         <main id="board">
             <section class="modify">
                 <nav>
@@ -47,12 +33,4 @@
 
             </section>
         </main>
-        <footer>
-            <p>
-                <span class="copyright">Copyrightⓒ 김철학(개발에반하다.)</span>
-                <span class="version">[[${appInfo.appName}]] v[[${appInfo.appVersion}]]</span>
-            </p>
-        </footer>
-    </div>    
-</body>
-</html>
+        <th:block th:replace="/_footer.html"></th:block>

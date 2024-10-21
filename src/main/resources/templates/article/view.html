@@ -1,183 +1,151 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>글보기</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-    <script th:src="@{/js/utils.js}"></script>
-    <script>
-        window.onload = function (){
-            const btnComplete = document.getElementById('btnComplete');
-            const commentForm = document.commentForm;
-            const commentList = document.getElementsByClassName('commentList')[0];
-            const empty = document.getElementsByClassName('empty')[0];
+<script>
+    window.onload = function (){
+        const btnComplete = document.getElementById('btnComplete');
+        const commentForm = document.commentForm;
+        const commentList = document.getElementsByClassName('commentList')[0];
+        const empty = document.getElementsByClassName('empty')[0];
 
 
-                btnComplete.onclick = async function(e){
-                    e.preventDefault();
-                    if (!confirm('등록하시겠습니까?')) {
-                        return;
-                    }
-
-                    const jsonData = {
-                        "writer": commentForm.writer.value,
-                        "parent": commentForm.parent.value,
-                        "content": commentForm.content.value
-                    }
-                    const data = await fetchPost('/sboard/comment', jsonData);
-                    console.log(data);
-                    if (data.cno > 0) {
-                        alert('댓글이 등록되었습니다.')
-
-                        const commentArticle = `<article>
-                                                <span class="nick">${data.user.nick}</span> |
-                                                <span class="date">${data.rdate.substring(2, 10)} ${data.rdate.substring(11, 19)}</span>
-                                                <p class="content">${data.content}</p>
-                                                <div>
-                                                    <a href="#" class="remove">삭제</a>
-                                                    <a href="#" class="modify">수정</a>
-                                                </div>
-                                            </article>`;
-
-                        commentList.insertAdjacentHTML('beforeend', commentArticle);
-                        empty.remove();
-                        commentForm.content.value = "";
-                        commentForm.content.focus();
-                    }
-                }
-            async function removeComment(e) {
-                    e.preventDefault();
-
-                    if (!confirm('삭제하시겠습니까?')) {
-                        return;
-                    }
-
-                    const info = document.getElementById('articleInfo');
-                    const article = e.target.closest('article');
-                    const cno = e.target.dataset.cno;
-                    const parent = e.target.dataset.parent;
-
-                    const jsonData = {
-                        "cno": cno,
-                        "parent": parent
-                    }
-
-                    const data = await fetchDelete('/sboard/comment', jsonData)
-                    console.log(data);
-
-                    if (data.result) {
-                        alert('댓글이 삭제되었습니다.');
-                        article.remove();
-                        info.innerHTML = `${article.nick}　  　${article.rdate.substring(2, 10)} ${article.rdate.substring(11, 19)}
-                                <span>조회수 ${article.hit} 　 댓글 ${article.comment}</span>`
-                    } else {
-                        alert('오류가 발생했습니다. 관리자에게 문의하세요.');
-                    }
-
+        btnComplete.onclick = async function(e){
+            e.preventDefault();
+            if (!confirm('등록하시겠습니까?')) {return;}
+            const jsonData = {
+                "writer": commentForm.writer.value,
+                "parent": commentForm.parent.value,
+                "content": commentForm.content.value
             }
-            document.addEventListener('click',function (e){
-               if (e.target.classList==='remove'){
-                   removeComment(e);
-               }
-            });
+            const data = await fetchPost('/comment', jsonData);
+            console.log(data);
+            if (data.cno > 0) {
+                alert('댓글이 등록되었습니다.')
+                const commentArticle = `<article>
+                                            <span class="nick">${data.user.nick}</span> |
+                                            <span class="date">${data.rdate.substring(2, 10)} ${data.rdate.substring(11, 19)}</span>
+                                            <p class="content">${data.content}</p>
+                                            <div>
+                                                <a href="" class="remove" th:data-cno="${data.cno}" th:data-parent="${data.parent}">삭제</a>
+                                                <a href="" class="modify" th:data-cno="${data.cno}" th:data-parent="${data.parent}">수정</a>
+                                            </div>
+                                        </article>`;
+                commentList.insertAdjacentHTML('beforeend', commentArticle);
+                commentForm.content.value = "";
+                commentForm.content.focus();
+                empty.remove();
+            }
+        }// btnComplete.onclick END
 
-        }
-    </script>
-</head>
-<body>
-    <div id="wrapper">
-        <header>
-            <h3>Board System</h3>
-            <p>
-                <span>홍길동</span>님 반갑습니다.
-                <a th:href="@{/article/list}">[로그아웃]</a>
-            </p>
-        </header>
-        <main id="board">
-            <section class="view">
-                <nav>
-                    <h1>글보기</h1>
-                </nav>
-                <table>
+        async function removeComment(e) {
+            e.preventDefault();
+
+            if (!confirm('삭제하시겠습니까?')) {
+                return;
+            }
+
+            const info = document.getElementById('info');
+            const thisArticle = e.target.closest('article');
+            const cno = e.target.dataset.cno;
+            const parent = e.target.dataset.parent;
+
+            const data = await fetchDelete('/comment?cno='+cno+'&parent='+parent);
+            console.log(data);
+
+            if (data) {
+                alert('댓글이 삭제되었습니다.');
+                thisArticle.remove();
+                info.innerHTML = `조회수 ${article.hit} 　 댓글 ${article.comment--}`;
+            } else {
+                alert('오류가 발생했습니다. 관리자에게 문의하세요.');
+            }
+
+        } // removeComment END
+
+        document.addEventListener('click',function (e){
+            if (e.target.classList.contains('remove')){
+                removeComment(e);
+            }
+        }); // addEventListener END
+
+    }// window.onload END
+</script>
+<th:block th:replace="/_header.html"></th:block>
+    <main id="board">
+        <section class="view">
+            <nav>
+                <h1>글보기</h1>
+            </nav>
+            <table>
+                <tr>
+                    <td colspan="3">
+                        <input type="text" name="title" th:value="${article.title}" readonly /></td>
+                </tr>
+                <tr>
+                    <td colspan="3" id="articleInfo">
+                        [[${article.nick}]]　  　[[${#strings.substring(article.rdate,0,10)}]] [[${#strings.substring(article.rdate,11,19)}]]
+                        <span id="info">조회수 [[${article.hit}]] 　 댓글 [[${article.comment}]]</span>
+                    </td>
+                </tr>
+                <th:block th:if="${article.file > 0}">
                     <tr>
-                        <td colspan="3">
-                            <input type="text" name="title" th:value="${article.title}" readonly /></td>
+                        <td style="width:50px" th:rowspan="${article.file+1}">첨부파일</td>
                     </tr>
-                    <tr>
-                        <td colspan="3" id="articleInfo">
-                            [[${article.nick}]]　  　[[${#strings.substring(article.rdate,0,10)}]] [[${#strings.substring(article.rdate,11,19)}]]
-                            <span>조회수 [[${article.hit}]] 　 댓글 [[${article.comment}]]</span>
-                        </td>
-                    </tr>
-                    <th:block th:if="${article.file>0}">
+                    <th:block th:each="file : ${article.fileList}">
                         <tr>
-                            <td style="width:50px" th:rowspan="${article.file}">첨부파일</td>
-                            <!--							<c:forEach var="file" items="${article.files}">-->
-                            <th:block th:each="file:${article.fileList}">
-                            <td style="border-bottom:none"><a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a></td>
-                            <td style="border-bottom:none"><span style="color: grey;">[[${file.download}]]회 다운로드</span></td>
+                            <td style="border-bottom:none">
+                                <a th:href="@{/file/download/{fno}(fno=${file.fno})}">[[${file.oName}]]</a>
+                            </td>
+                            <td style="border-bottom:none">
+                                <span style="color: grey;">[[${file.download}]]회 다운로드</span>
+                            </td>
                         </tr>
-                            </th:block>
                     </th:block>
-                    </tr>
-                    <tr>
-                        <td colspan="3" class="content">
-                            <textarea name="content" readonly>[[${article.content}]]</textarea>
-                        </td>
-                    </tr>
-                </table>
-                
-                <div>
-                    <a th:href="@{/article/delete}" class="btn btnRemove">삭제</a>
-                    <a th:href="@{/article/modify}" class="btn btnModify">수정</a>
-                    <a th:href="@{/article/list}" class="btn btnList">목록</a>
-                </div>
+                </th:block>
+                <tr>
+                    <td colspan="3" class="content">
+                        <textarea name="content" readonly>[[${article.content}]]</textarea>
+                    </td>
+                </tr>
+            </table>
 
-                <!-- 댓글목록 -->
-                <section class="commentList">
-                    <h3>댓글목록</h3>                   
-                    <th:block th:if="${article.comment>0}">
+            <div>
+                <a th:href="@{/article/delete}" class="btn btnRemove">삭제</a>
+                <a th:href="@{/article/modify}" class="btn btnModify">수정</a>
+                <a th:href="@{/article/list}" class="btn btnList">목록</a>
+            </div>
 
+            <!-- 댓글목록 -->
+            <section class="commentList">
+                <h3>댓글목록</h3>
+                <th:block th:if="${article.comment>0}">
                     <article th:each="comment:${article.commentList}">
                         <span class="nick">[[${comment.user.nick}]]</span> |
                         <span class="date">[[${#strings.substring(comment.rdate,2,10)}]] [[${#strings.substring(comment.rdate,11,19)}]]</span>
                         <p class="content">[[${comment.content}]]</p>
-                        <div th:if="${#authentication.principal.user.uid==comment.user.uid}">
-                            <a href="#" class="remove" th:data-cno="${comment.cno}" th:data-parent="${article.no}">삭제</a>
-                            <a href="#" class="modify" th:data-cno="${comment.cno}" th:data-parent="${article.no}">수정</a>
+                        <div th:if="${#authentication.principal.user.uid==comment.user.uid||#authentication.principal.user.role=='ADMIN'}">
+                            <a href="" class="remove" th:data-cno="${comment.cno}" th:data-parent="${article.ano}">삭제</a>
+                            <a href="" class="modify" th:data-cno="${comment.cno}" th:data-parent="${article.ano}">수정</a>
                         </div>
                     </article>
+                </th:block>
 
-                    </th:block>
-
-                    <th:block th:unless="${article.comment>0}">
-                    <p class="empty">등록된 댓글이 없습니다.</p>
-
-                    </th:block>
-                </section>
-
-                <!-- 댓글쓰기 -->
-                <section class="commentForm">
-                    <h3>댓글쓰기</h3>
-                    <form name="commentForm" method="post">
-                        <input type="hidden" th:value="${#authentication.principal.user.uid}" name="writer">
-                        <input type="hidden" th:value="${article.no}" name="parent">
-                        <textarea name="content" placeholder="댓글내용 입력"></textarea>
-                        <div>
-                            <a href="#" class="btn btnCancel">취소</a>
-                            <input type="submit" value="작성완료" id="btnComplete" class="btn btnComplete"/>
-                        </div>
-                    </form>
-                </section>
-
+                <th:block th:unless="${article.comment>0}">
+                <p class="empty">등록된 댓글이 없습니다.</p>
+                </th:block>
             </section>
-        </main>
-        <footer>
-            <p>
-                <span class="copyright">Copyrightⓒ 김철학(개발에반하다.)</span>
-                <span class="version">[[${appInfo.appName}]] v[[${appInfo.appVersion}]]</span>
-            </p>
-        </footer>
-    </div>    
-</body>
-</html>
+
+            <!-- 댓글쓰기 -->
+            <section class="commentForm">
+                <h3>댓글쓰기</h3>
+                <form name="commentForm" method="post">
+                    <input type="hidden" th:value="${#authentication.principal.user.uid}" name="writer">
+                    <input type="hidden" th:value="${article.ano}" name="parent">
+                    <textarea name="content" placeholder="댓글내용 입력"></textarea>
+                    <div>
+                        <a href="#" class="btn btnCancel">취소</a>
+                        <input type="submit" value="작성완료" id="btnComplete" class="btn btnComplete"/>
+                    </div>
+                </form>
+            </section>
+
+        </section>
+    </main>
+<th:block th:replace="/_footer.html"></th:block>

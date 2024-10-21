@@ -16,15 +16,17 @@ logging:
 server:
     port: 8080
     servlet:
-        context-path: /sboard
+        context-path: /
+
 spring:
     application:
         name: sboard
+        version: ${version}
     datasource:
         driver-class-name: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://15.164.70.236:3306/jboard
-        username: jboard
-        password: Wnrud1234!
+        url: jdbc:mysql://localhost:3306/jboard
+        username: root
+        password: "1234"
     devtools:
         livereload:
             enabled: true
@@ -40,7 +42,7 @@ spring:
                 show_sql: true
     mail:
         username: jptrnmrs@gmail.com
-        password: diog dhjo yxdt gcpb
+        password: ncjf joty defr jpfn
 
     thymeleaf:
         prefix: classpath:/templates
@@ -49,6 +51,20 @@ spring:
         multipart:
             location: uploads/
             max-file-size: 10MB
-
-ext:
-    version: ${ext.version}
+    security:
+        oauth2:
+            client:
+                provider:
+                    google:
+                        authorization-uri: https://accounts.google.com/o/oauth2/v2/auth
+                        token-uri: https://accounts.google.com/o/oauth2/token
+                        user-info-uri: https://www.googleapis.com/oauth2/v3/userinfo
+                        user-name-attribute: name
+                registration:
+                    google:
+                        client-id: 1010638422498-7oub6magrjbg2fjmu548ea3i4ehpct63.apps.googleusercontent.com
+                        client-secret: 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
+                        redirect-uri: http://localhost:8080/login/oauth2/code/google
+                        scope:
+                            - email
+                            - profile

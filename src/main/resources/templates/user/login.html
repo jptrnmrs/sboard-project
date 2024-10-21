@@ -1,15 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>로그인</title>
-    <link rel="stylesheet" th:href="@{/css/style.css}"/>
-</head>
-<body>
-    <div id="wrapper">
-        <header>
-            <h3>Board System</h3>
-        </header>
+
+<th:block th:replace="/_header.html"></th:block>
+<script>
+    const success = [[${success}]];
+    if(success===100){alert("아이디나 비밀번호를 다시 확인해주세요.")}
+    else if(success===101){alert("성공적으로 로그아웃 되었습니다.")}
+</script>
         <main id="user">
             <section class="login">
                 <form method="post">
@@ -24,7 +19,6 @@
                         </tr>
                     </table>
                     <input type="submit" value="로그인" class="btnLogin"/>
-                    
                 </form>
                 <div>
                     <h3>회원 로그인 안내</h3>
@@ -39,12 +33,4 @@
                 </div>
             </section>
         </main>
-        <footer>
-            <p>
-                <span class="copyright">Copyrightⓒ 김주경</span>
-                <span class="version">[[${appInfo.appName}]] ver.[[${appInfo.appVersion}]]</span>
-            </p>
-        </footer>
-    </div>    
-</body>
-</html>
+        <th:block th:replace="/_footer.html"></th:block>

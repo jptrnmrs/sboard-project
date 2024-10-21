@@ -7,16 +7,22 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @Builder
 public class MyUserDetails implements UserDetails {
 
     private User user;
+
+    private Map<String, Object> attributes;
+    private String accessToken;
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -56,4 +62,5 @@ public class MyUserDetails implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
 }

@@ -37,7 +37,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .on(qArticle.writer.eq(qUser.uid))
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(qArticle.no.desc())
+                .orderBy(qArticle.ano.desc())
                 .fetch();
 
         long total = queryFactory
@@ -75,7 +75,7 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
                 .where(expression)
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
-                .orderBy(qArticle.no.desc())
+                .orderBy(qArticle.ano.desc())
                 .fetch();
 
         long total = queryFactory
@@ -91,12 +91,12 @@ public class ArticleRepositoryImpl implements ArticleRepositoryCustom {
     }
 
     @Override
-    public Article selectArticleByNo(int no) {
+    public Article selectArticleByAno(int ano) {
         Tuple tuple = queryFactory.select(qArticle, qUser.nick)
                 .from(qArticle)
                 .join(qUser)
                 .on(qArticle.writer.eq(qUser.uid))
-                .where(qArticle.no.eq(no))
+                .where(qArticle.ano.eq(ano))
                 .fetchOne();
 
         Article article = tuple.get(0, Article.class);

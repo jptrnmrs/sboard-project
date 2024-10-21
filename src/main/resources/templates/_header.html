@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity6">
+<head>
+  <meta charset="UTF-8">
+  <title>Spring Board</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}"/>
+  <script th:src="@{/js/utils.js}"></script>
+</head>
+<body>
+<div id="wrapper">
+  <header>
+    <h3>Board System</h3>
+    <p sec:authorize="isAuthenticated()" >
+      <span>[[${#authentication.principal.user.nick}]]</span>님 반갑습니다.
+      <a th:href="@{/user/logout}">[로그아웃]</a>
+    </p>
+  </header>

@@ -11,7 +11,7 @@ import java.util.List;
 @Builder
 public class ArticleDTO {
 
-    private int no;
+    private int ano;
 
     @Builder.Default
     private String cate = "free";

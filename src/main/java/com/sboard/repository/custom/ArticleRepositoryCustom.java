@@ -12,5 +12,6 @@ public interface ArticleRepositoryCustom {
 
     public Page<Tuple> selectArticleAllForList(PageRequestDTO pageRequestDTO, Pageable pageable);
     public Page<Tuple> selectArticleForSearch(PageRequestDTO pageRequestDTO, Pageable pageable);
-    public Article selectArticleByNo(int no);
+    public Article selectArticleByAno(int ano);
+
 }

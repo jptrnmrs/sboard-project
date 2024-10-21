@@ -34,6 +34,8 @@ public class QComment extends EntityPathBase<Comment> {
 
     public final QUser user;
 
+    public final StringPath writer = createString("writer");
+
     public QComment(String variable) {
         this(Comment.class, forVariable(variable), INITS);
     }

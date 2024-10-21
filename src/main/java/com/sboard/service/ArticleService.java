@@ -39,12 +39,12 @@ public class ArticleService {
         // 저장
         Article savedArticle = articleRepository.save(article);
 
-        return savedArticle.getNo();
+        return savedArticle.getAno();
     }
 
 
     public ArticleDTO selectArticle(int no) {
-        Article article = articleRepository.selectArticleByNo(no);
+        Article article = articleRepository.selectArticleByAno(no);
         log.info(article);
 
         int hit = article.getHit();
@@ -66,7 +66,7 @@ public class ArticleService {
 
 
     public PageResponseDTO selectArticles(PageRequestDTO pageRequestDTO) {
-        Pageable pageable = pageRequestDTO.getPageable("no");
+        Pageable pageable = pageRequestDTO.getPageable("ano");
 
         Page<Tuple> pageArticle = null;
 

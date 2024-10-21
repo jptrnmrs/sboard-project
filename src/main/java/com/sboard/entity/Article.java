@@ -17,7 +17,7 @@ import java.util.List;
 public class Article {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
-    private int no;
+    private int ano;
 
     private String cate;
     private String title;
@@ -27,7 +27,9 @@ public class Article {
     private int hit;
     private int file;
     private int comment;
+
     private String writer;
+
     private String regip;
 
     @CreationTimestamp
@@ -37,9 +39,9 @@ public class Article {
     @Transient  // 엔티티 속성에서 제외시키는 어노테이션
     private String nick;
 
-    @OneToMany(mappedBy = "ano")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "ano")
     private List<FileEntity> fileList;
 
-    @OneToMany(mappedBy = "parent")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "parent")
     private List<Comment> commentList;
 }

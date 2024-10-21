@@ -26,7 +26,10 @@ public class UserController {
 
 
     @GetMapping("/user/login")
-    public String login( ){
+    public String login( Model model ,@RequestParam(required = false, value = "success") Integer parasuc) {
+        int success = 0;
+        if(!(parasuc == null)) success = parasuc;
+        model.addAttribute("success", success);
         return "/user/login";
     }
 

@@ -77,7 +77,7 @@ footer > p > .version {
 #user > .login > form > table {
     margin-left: 52px;
     margin-top: 30px;
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     border-collapse: collapse;
     border-spacing: 0;
 }
@@ -117,7 +117,7 @@ footer > p > .version {
     height: 104px;
     background: #f5f6fa;
     border-top: 1px solid #cfded8;
-    margin-top: 20px;
+    margin-top: 15px;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -684,4 +684,16 @@ footer > p > .version {
 
 #user > .myInfo button {
     cursor: pointer;
+}
+p.social{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+a.google{
+    margin: 0 auto;
+}
+.google > img{
+    height: 30px;
+    width: auto;
 }

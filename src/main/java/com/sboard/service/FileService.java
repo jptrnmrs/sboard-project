@@ -49,7 +49,6 @@ public class FileService {
         if (!fileUploadpath.exists()) {
             fileUploadpath.mkdirs();
         }
-
         // 파일 업로드 시스템 경로 구하기
         String path = new File(uploadPath).getAbsolutePath();
 
@@ -69,30 +68,26 @@ public class FileService {
                     log.error(e);
                 }
                 FileDTO fileDTO = FileDTO.builder()
-                        .oName(oName)
-                        .sName(sName)
-                        .build();
+                        .oName(oName).sName(sName).build();
                 uploadFiles.add(fileDTO);
 
             }
         }
         return uploadFiles;
     }
+
     public ResponseEntity<Resource> downloadFile(int fno) {
         Optional<FileEntity> optFile = fileRepository.findById(fno);
         FileEntity fileEntity = null;
         if (optFile.isPresent()) {
             fileEntity = optFile.get();
-
             int count = fileEntity.getDownload();
             fileEntity.setDownload(count + 1);
-
             fileRepository.save(fileEntity);
         }
         try {
             Path path = Paths.get(uploadPath + fileEntity.getSName());
             String contentType = Files.probeContentType(path);
-
             HttpHeaders headers = new HttpHeaders();
             headers.setContentDisposition(
                     ContentDisposition.builder("attachment")
@@ -101,18 +96,9 @@ public class FileService {
             headers.add(HttpHeaders.CONTENT_TYPE, contentType);
             Resource resource = new InputStreamResource(Files.newInputStream(path));
 
-            return ResponseEntity
-                    .ok()
-                    .headers(headers)
-                    .body(resource);
+            return ResponseEntity.ok().headers(headers).body(resource);
 
-        } catch (IOException e) {
-
-            return ResponseEntity
-                    .notFound().build();
-
-        }
-
+        } catch (IOException e) {return ResponseEntity.notFound().build();}
     }
 
     public void insertFile(FileDTO fileDTO) {
